@@ -6,23 +6,17 @@ import java.util.Objects;
  * Клас Phone з підтримкою статичних членів та конструктора копіювання.
  */
 public class Phone {
-    // Статичне поле для підрахунку кількості об'єктів
-    private static int totalPhonesCreated = 0;
-
     private String brand;
     private String model;
     private double price;
-    private OsType os; // Використання enum
 
     /**
      * Основний конструктор.
      */
-    public Phone(String brand, String model, double price, OsType os) {
+    public Phone(String brand, String model, double price) {
         setBrand(brand);
         setModel(model);
         setPrice(price);
-        this.os = os;
-        totalPhonesCreated++; // Збільшуємо лічильник
     }
 
     /**
@@ -30,25 +24,15 @@ public class Phone {
      * @param other об'єкт, з якого копіюються дані
      */
     public Phone(Phone other) {
-        this(other.brand, other.model, other.price, other.os);
+        this(other.brand, other.model, other.price);
     }
 
-    /**
-     * Статичний метод для отримання загальної кількості створених об'єктів.
-     */
-    public static int getTotalPhonesCreated() {
-        return totalPhonesCreated;
-    }
-
-    // Гетери та сетери (з валідацією з ПР5)
+    // Гетери та сетери
     public String getBrand() { return brand; }
     public void setBrand(String brand) {
         if (brand == null || brand.trim().isEmpty()) throw new IllegalArgumentException("Brand empty");
         this.brand = brand;
     }
-
-    public OsType getOs() { return os; }
-    public void setOs(OsType os) { this.os = os; }
 
     public double getPrice() { return price; }
     public void setPrice(double price) {
@@ -61,7 +45,7 @@ public class Phone {
 
     @Override
     public String toString() {
-        return String.format("Phone[Brand: %s, Model: %s, Price: %.2f, OS: %s]",
-                brand, model, price, os);
+        return String.format("Phone[Brand: %s, Model: %s, Price: %.2f]",
+                brand, model, price);
     }
 }
