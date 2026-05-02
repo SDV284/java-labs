@@ -16,28 +16,38 @@ public class Main {
             System.out.println("3. Вийти");
             System.out.print("Оберіть дію: ");
 
-            int choice = Integer.parseInt(scanner.nextLine());
-            switch (choice) {
-                case 1 -> addPhone();
-                case 2 -> showPhones();
-                case 3 -> running = false;
-                default -> System.out.println("Невірний вибір.");
+            try {
+                int choice = Integer.parseInt(scanner.nextLine());
+                switch (choice) {
+                    case 1 -> addPhone();
+                    case 2 -> showPhones();
+                    case 3 -> running = false;
+                    default -> System.out.println("Невірний вибір.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Помилка: введіть числове значення для меню.");
             }
         }
     }
 
     private static void addPhone() {
-        System.out.print("Бренд: ");
-        String brand = scanner.nextLine();
-        System.out.print("Модель: ");
-        String model = scanner.nextLine();
-        System.out.print("Ціна: ");
-        double price = Double.parseDouble(scanner.nextLine());
-        System.out.print("Ємність батареї: ");
-        int battery = Integer.parseInt(scanner.nextLine());
+        try {
+            System.out.print("Бренд: ");
+            String brand = scanner.nextLine();
+            System.out.print("Модель: ");
+            String model = scanner.nextLine();
+            System.out.print("Ціна: ");
+            double price = Double.parseDouble(scanner.nextLine());
+            System.out.print("Ємність батареї: ");
+            int battery = Integer.parseInt(scanner.nextLine());
 
-        phones.add(new Phone(brand, model, price, battery));
-        System.out.println("Телефон успішно додано!");
+            phones.add(new Phone(brand, model, price, battery));
+            System.out.println("Телефон успішно додано!");
+        } catch (NumberFormatException e) {
+            System.out.println("Помилка: Ціна та батарея мають бути числами.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Помилка валідації: " + e.getMessage());
+        }
     }
 
     private static void showPhones() {
