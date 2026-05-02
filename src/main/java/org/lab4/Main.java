@@ -1,60 +1,28 @@
 package org.lab4;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private static ArrayList<Phone> phones = new ArrayList<>();
-    private static Scanner scanner = new Scanner(System.in);
-
     public static void main(String[] args) {
-        boolean running = true;
-        while (running) {
-            System.out.println("\n--- Меню ---");
-            System.out.println("1. Додати новий телефон");
-            System.out.println("2. Вивести всі телефони");
-            System.out.println("3. Вийти");
-            System.out.print("Оберіть дію: ");
+        // Інформаційна шапка
+        System.out.println("========================================");
+        System.out.println("Програма керування магазином телефонів");
+        System.out.println("Виконав: Святішенко Дмитро, Варіант 3");
+        System.out.println("========================================");
 
-            try {
-                int choice = Integer.parseInt(scanner.nextLine());
-                switch (choice) {
-                    case 1 -> addPhone();
-                    case 2 -> showPhones();
-                    case 3 -> running = false;
-                    default -> System.out.println("Невірний вибір.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Помилка: введіть числове значення для меню.");
-            }
-        }
-    }
+        Store myStore = new Store("TechZone");
+        Scanner sc = new Scanner(System.in);
 
-    private static void addPhone() {
-        try {
-            System.out.print("Бренд: ");
-            String brand = scanner.nextLine();
-            System.out.print("Модель: ");
-            String model = scanner.nextLine();
-            System.out.print("Ціна: ");
-            double price = Double.parseDouble(scanner.nextLine());
-            System.out.print("Ємність батареї: ");
-            int battery = Integer.parseInt(scanner.nextLine());
+        // Демонстрація статичного поля
+        System.out.println("Початкова кількість телефонів: " + Phone.getTotalPhonesCreated());
 
-            phones.add(new Phone(brand, model, price, battery));
-            System.out.println("Телефон успішно додано!");
-        } catch (NumberFormatException e) {
-            System.out.println("Помилка: Ціна та батарея мають бути числами.");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Помилка валідації: " + e.getMessage());
-        }
-    }
+        // Тестовий об'єкт
+        Phone p1 = new Phone("Apple", "iPhone 15", 45000, OsType.IOS);
+        myStore.addPhone(p1);
 
-    private static void showPhones() {
-        if (phones.isEmpty()) {
-            System.out.println("Список порожній.");
-        } else {
-            phones.forEach(System.out::println);
-        }
+        // Демонстрація конструктора копіювання через додавання в магазин
+        System.out.println("Створено об'єктів після додавання: " + Phone.getTotalPhonesCreated());
+
+        myStore.displayInventory();
     }
 }
