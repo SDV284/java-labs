@@ -56,5 +56,4 @@ public class Phone {
         return String.format("Phone[Brand: %s, Model: %s, Price: %.2f, Battery: %d mAh]",
                 brand, model, price, batteryCapacity);
     }
-    // equals та hashCode залишаються з ПР4 (з додаванням нового поля)
 }
