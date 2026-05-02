@@ -1,26 +1,50 @@
 package org.lab4;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
-/**
- * Драйвер-клас для демонстрації роботи з класом Phone та ArrayList.
- */
 public class Main {
+    private static ArrayList<Phone> phones = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        // Створення ArrayList для зберігання об'єктів Phone
-        ArrayList<Phone> phoneList = new ArrayList<>();
+        boolean running = true;
+        while (running) {
+            System.out.println("\n--- Меню ---");
+            System.out.println("1. Додати новий телефон");
+            System.out.println("2. Вивести всі телефони");
+            System.out.println("3. Вийти");
+            System.out.print("Оберіть дію: ");
 
-        // Заповнення списку 5-ма об'єктами
-        phoneList.add(new Phone("Apple", "iPhone 15", 42000.0));
-        phoneList.add(new Phone("Samsung", "Galaxy S23", 35000.0));
-        phoneList.add(new Phone("Google", "Pixel 8", 31000.5));
-        phoneList.add(new Phone("Xiaomi", "13T Pro", 28000.0));
-        phoneList.add(new Phone("Motorola", "Edge 40", 18500.0));
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> addPhone();
+                case 2 -> showPhones();
+                case 3 -> running = false;
+                default -> System.out.println("Невірний вибір.");
+            }
+        }
+    }
 
-        // Виведення інформації про кожний об'єкт через toString()
-        System.out.println("Список телефонів (кількість: " + phoneList.size() + "):");
-        for (Phone phone : phoneList) {
-            System.out.println(phone.toString());
+    private static void addPhone() {
+        System.out.print("Бренд: ");
+        String brand = scanner.nextLine();
+        System.out.print("Модель: ");
+        String model = scanner.nextLine();
+        System.out.print("Ціна: ");
+        double price = Double.parseDouble(scanner.nextLine());
+        System.out.print("Ємність батареї: ");
+        int battery = Integer.parseInt(scanner.nextLine());
+
+        phones.add(new Phone(brand, model, price, battery));
+        System.out.println("Телефон успішно додано!");
+    }
+
+    private static void showPhones() {
+        if (phones.isEmpty()) {
+            System.out.println("Список порожній.");
+        } else {
+            phones.forEach(System.out::println);
         }
     }
 }
