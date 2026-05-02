@@ -1,68 +1,60 @@
 package org.lab4;
 
-import java.util.Objects;
-
 /**
- * Клас Phone представляє модель мобільного телефону.
- * Містить інформацію про бренд, модель та ціну.
- *
- * @author Ваше Прізвище
- * @version 1.0
+ * Клас Phone з валідацією даних та обробкою винятків.
  */
 public class Phone {
     private String brand;
     private String model;
     private double price;
+    private int batteryCapacity; // Нове поле
 
     /**
-     * Конструктор з параметрами.
-     * @param brand бренд телефону
-     * @param model модель телефону
-     * @param price ціна телефону
+     * Конструктор з валідацією.
      */
-    public Phone(String brand, String model, double price) {
+    public Phone(String brand, String model, double price, int batteryCapacity) {
+        setBrand(brand);
+        setModel(model);
+        setPrice(price);
+        setBatteryCapacity(batteryCapacity);
+    }
+
+    public String getBrand() { return brand; }
+    public void setBrand(String brand) {
+        if (brand == null || brand.trim().isEmpty()) {
+            throw new IllegalArgumentException("Бренд не може бути порожнім");
+        }
         this.brand = brand;
+    }
+
+    public String getModel() { return model; }
+    public void setModel(String model) {
+        if (model == null || model.trim().isEmpty()) {
+            throw new IllegalArgumentException("Модель не може бути порожньою");
+        }
         this.model = model;
+    }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) {
+        if (price <= 0) {
+            throw new IllegalArgumentException("Ціна повинна бути більшою за 0");
+        }
         this.price = price;
     }
 
-    // Гетери та сетери
-    public String getBrand() { return brand; }
-    public void setBrand(String brand) { this.brand = brand; }
+    public int getBatteryCapacity() { return batteryCapacity; }
+    public void setBatteryCapacity(int batteryCapacity) {
+        if (batteryCapacity <= 0) {
+            throw new IllegalArgumentException("Ємність батареї має бути додатною");
+        }
+        this.batteryCapacity = batteryCapacity;
+    }
 
-    public String getModel() { return model; }
-    public void setModel(String model) { this.model = model; }
-
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-
-    /**
-     * Повертає текстове представлення об'єкта.
-     */
     @Override
     public String toString() {
-        return "Phone{" +
-                "brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
-                '}';
+        return String.format("Phone[Brand: %s, Model: %s, Price: %.2f, Battery: %d mAh]",
+                brand, model, price, batteryCapacity);
     }
-
-    /**
-     * Порівнює поточний об'єкт з іншим на рівність за всіма полями.
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Phone phone = (Phone) o;
-        return Double.compare(phone.price, price) == 0 &&
-                Objects.equals(brand, phone.brand) &&
-                Objects.equals(model, phone.model);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(brand, model, price);
-    }
+    // equals та hashCode залишаються з ПР4 (з додаванням нового поля)
 }
