@@ -4,41 +4,46 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    private static ArrayList<Phone> devices = new ArrayList<>();
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        // Єдина колекція для всіх типів об'єктів
-        ArrayList<Phone> devices = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
-        boolean running = true;
+        boolean exit = false;
+        while (!exit) {
+            System.out.println("\n=== ГОЛОВНЕ МЕНЮ (v1) ===");
+            System.out.println("1. Створити новий об'єкт");
+            System.out.println("2. Вивести всі об'єкти");
+            System.out.println("3. Вихід");
+            System.out.print("Вибір: ");
 
-        while (running) {
-            System.out.println("\n1. Додати Смартфон | 2. Додати Кнопковий | 3. Показати всі | 4. Вихід");
-            String choice = sc.nextLine();
-
+            String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> {
-                    System.out.print("Бренд: "); String b = sc.nextLine();
-                    System.out.print("Модель: "); String m = sc.nextLine();
-                    System.out.print("Ціна: "); double p = Double.parseDouble(sc.nextLine());
-                    System.out.print("Діагональ: "); double s = Double.parseDouble(sc.nextLine());
-                    System.out.print("ОС: "); String os = sc.nextLine();
-                    devices.add(new SmartPhone(b, m, p, s, os));
-                }
-                case "2" -> {
-                    System.out.print("Бренд: "); String b = sc.nextLine();
-                    System.out.print("Модель: "); String m = sc.nextLine();
-                    System.out.print("Ціна: "); double p = Double.parseDouble(sc.nextLine());
-                    System.out.print("Є ліхтарик? (true/false): "); boolean f = Boolean.parseBoolean(sc.nextLine());
-                    devices.add(new KeypadPhone(b, m, p, f));
-                }
-                case "3" -> {
-                    System.out.println("\n--- Список пристроїв (Поліморфний вивід) ---");
-                    for (Phone device : devices) {
-                        // Викликається відповідний toString() залежно від реального типу об'єкта
-                        System.out.println(device.toString());
-                    }
-                }
-                case "4" -> running = false;
+                case "1" -> createBasicPhone(); // Тимчасовий метод
+                case "2" -> showAllDevices();
+                case "3" -> exit = true;
+                default -> System.out.println("Невірний вибір.");
             }
+        }
+    }
+
+    private static void createBasicPhone() {
+        try {
+            System.out.print("Бренд: "); String b = scanner.nextLine();
+            System.out.print("Модель: "); String m = scanner.nextLine();
+            System.out.print("Ціна: "); double p = Double.parseDouble(scanner.nextLine());
+
+            devices.add(new Phone(b, m, p));
+            System.out.println("Базовий телефон додано.");
+        } catch (Exception e) {
+            System.out.println("Помилка введення.");
+        }
+    }
+
+    private static void showAllDevices() {
+        if (devices.isEmpty()) {
+            System.out.println("Список порожній.");
+        } else {
+            for (Phone d : devices) System.out.println(d.toString());
         }
     }
 }
