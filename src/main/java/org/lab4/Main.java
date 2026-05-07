@@ -76,17 +76,35 @@ public class Main {
     }
 
     private static void searchMenu() {
-        System.out.println("\n--- МЕНЮ ПОШУКУ ---");
-        System.out.println("1. Пошук за брендом");
-        System.out.println("2. Повернутися");
-        System.out.print("Вибір: ");
+        boolean back = false;
+        while (!back) {
+            System.out.println("\n--- КРИТЕРІЇ ПОШУКУ ---");
+            System.out.println("1. За брендом | 2. За моделлю | 3. За ціною | 4. Назад");
+            String choice = scanner.nextLine();
 
-        String choice = scanner.nextLine();
-        if (choice.equals("1")) {
-            System.out.print("Введіть бренд: ");
-            String brand = scanner.nextLine();
-            ArrayList<Phone> results = findByBrand(brand);
-            displayResults(results);
+            switch (choice) {
+                case "1" -> {
+                    System.out.print("Бренд: ");
+                    displayResults(findByBrand(scanner.nextLine()));
+                }
+                case "2" -> {
+                    System.out.print("Модель: ");
+                    displayResults(findByModel(scanner.nextLine()));
+                }
+                case "3" -> {
+                    try {
+                        System.out.print("Мін. ціна: ");
+                        double min = Double.parseDouble(scanner.nextLine());
+                        System.out.print("Макс. ціна: ");
+                        double max = Double.parseDouble(scanner.nextLine());
+                        displayResults(findByPriceRange(min, max));
+                    } catch (Exception e) {
+                        System.out.println("Помилка: введіть числа.");
+                    }
+                }
+                case "4" -> back = true;
+                default -> System.out.println("Невірний вибір.");
+            }
         }
     }
 
