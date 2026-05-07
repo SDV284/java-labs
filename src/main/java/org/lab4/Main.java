@@ -74,4 +74,38 @@ public class Main {
             for (Phone d : devices) System.out.println(d.toString());
         }
     }
+
+    private static void searchMenu() {
+        System.out.println("\n--- МЕНЮ ПОШУКУ ---");
+        System.out.println("1. Пошук за брендом");
+        System.out.println("2. Повернутися");
+        System.out.print("Вибір: ");
+
+        String choice = scanner.nextLine();
+        if (choice.equals("1")) {
+            System.out.print("Введіть бренд: ");
+            String brand = scanner.nextLine();
+            ArrayList<Phone> results = findByBrand(brand);
+            displayResults(results);
+        }
+    }
+
+    private static ArrayList<Phone> findByBrand(String brand) {
+        ArrayList<Phone> found = new ArrayList<>();
+        for (Phone p : devices) {
+            // Пошук без урахування регістру (Stream API заборонено)
+            if (p.getBrand().toLowerCase().contains(brand.toLowerCase())) {
+                found.add(p);
+            }
+        }
+        return found;
+    }
+
+    private static void displayResults(ArrayList<Phone> results) {
+        if (results.isEmpty()) {
+            System.out.println("Об'єктів не знайдено.");
+        } else {
+            for (Phone p : results) System.out.println(p);
+        }
+    }
 }
