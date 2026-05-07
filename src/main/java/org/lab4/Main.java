@@ -31,31 +31,48 @@ public class Main {
     }
 
     private static void createDeviceMenu() {
-        System.out.println("\n--- Оберіть тип: 1.Смартфон 2.Кнопковий 3.Захищений 4.Складаний ---");
+        System.out.println("\n--- Оберіть тип пристрою ---");
+        System.out.println("1. SmartPhone | 2. KeypadPhone | 3. RuggedPhone | 4. FoldableSmartphone");
         String typeChoice = scanner.nextLine();
+
         try {
             System.out.print("Бренд: "); String b = scanner.nextLine();
             System.out.print("Модель: "); String m = scanner.nextLine();
             System.out.print("Ціна: "); double p = Double.parseDouble(scanner.nextLine());
 
-            // НОВЕ: Запит кількості
-            System.out.print("Кількість одиниць на склад: ");
+            System.out.print("Кількість одиниць: ");
             int q = Integer.parseInt(scanner.nextLine());
 
             Phone phone = null;
             switch (typeChoice) {
-                case "1" -> phone = new SmartPhone(b, m, p, 6.1, "Android");
-                case "2" -> phone = new KeypadPhone(b, m, p, true);
-                case "3" -> phone = new RuggedPhone(b, m, p, 68);
-                case "4" -> phone = new FoldableSmartPhone(b, m, p, 7.6, "Android", 200000);
+                case "1" -> {
+                    System.out.print("Екран: "); double s = Double.parseDouble(scanner.nextLine());
+                    System.out.print("ОС: "); String os = scanner.nextLine();
+                    phone = new SmartPhone(b, m, p, s, os);
+                }
+                case "2" -> {
+                    System.out.print("Ліхтарик (true/false): "); boolean f = Boolean.parseBoolean(scanner.nextLine());
+                    phone = new KeypadPhone(b, m, p, f);
+                }
+                case "3" -> {
+                    System.out.print("IP Рейтинг (число): "); int ip = Integer.parseInt(scanner.nextLine());
+                    phone = new RuggedPhone(b, m, p, ip);
+                }
+                case "4" -> {
+                    System.out.print("Екран: "); double s = Double.parseDouble(scanner.nextLine());
+                    System.out.print("ОС: "); String os = scanner.nextLine();
+                    System.out.print("Цикли згинання: "); int c = Integer.parseInt(scanner.nextLine());
+                    phone = new FoldableSmartPhone(b, m, p, s, os, c);
+                }
+                default -> System.out.println("Невірний тип пристрою.");
             }
 
             if (phone != null) {
                 myStore.addNewPhone(phone, q);
-                System.out.println("Дані оновлено!");
+                System.out.println("Товар успішно додано/оновлено на складі.");
             }
         } catch (Exception e) {
-            System.out.println("Помилка вводу.");
+            System.out.println("Помилка: Некоректний формат даних. Спробуйте ще раз.");
         }
     }
 
