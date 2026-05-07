@@ -9,6 +9,7 @@ public class SmartPhone extends Phone {
 
     public SmartPhone(String brand, String model, double price, double screenSize, String os) {
         super(brand, model, price); // Виклик конструктора базового класу
+        this.type = "SmartPhone";
         this.screenSize = screenSize;
         this.os = os;
     }

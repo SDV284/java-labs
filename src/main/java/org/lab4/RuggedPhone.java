@@ -5,6 +5,7 @@ public class RuggedPhone extends Phone {
 
     public RuggedPhone(String brand, String model, double price, int ipRating) {
         super(brand, model, price);
+        this.type = "RuggedPhone";
         this.ipRating = ipRating;
     }
 

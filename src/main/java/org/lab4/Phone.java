@@ -6,6 +6,7 @@ import java.util.Objects;
  * Клас Phone з підтримкою статичних членів та конструктора копіювання.
  */
 public class Phone {
+    protected String type; // Поле для ідентифікації класу в JSON
     private String brand;
     private String model;
     private double price;
@@ -14,6 +15,7 @@ public class Phone {
      * Основний конструктор.
      */
     public Phone(String brand, String model, double price) {
+        this.type = "Phone";
         setBrand(brand);
         setModel(model);
         setPrice(price);

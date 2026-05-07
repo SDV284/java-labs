@@ -5,6 +5,7 @@ public class FoldableSmartPhone extends SmartPhone {
 
     public FoldableSmartPhone(String brand, String model, double price, double screenSize, String os, int foldingCycles) {
         super(brand, model, price, screenSize, os);
+        this.type = "FoldableSmartPhone";
         this.foldingCycles = foldingCycles;
     }
 
