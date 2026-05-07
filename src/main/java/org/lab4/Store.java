@@ -26,4 +26,25 @@ public class Store {
 
     public ArrayList<StoreItem> getInventory() { return inventory; }
     public void setInventory(ArrayList<StoreItem> list) { this.inventory = list; }
+
+    public ArrayList<StoreItem> findByBrand(String brand) {
+        ArrayList<StoreItem> results = new ArrayList<>();
+        for (StoreItem item : inventory) {
+            if (item.getPhone().getBrand().toLowerCase().contains(brand.toLowerCase())) {
+                results.add(item);
+            }
+        }
+        return results;
+    }
+
+    public ArrayList<StoreItem> findByPriceRange(double min, double max) {
+        ArrayList<StoreItem> results = new ArrayList<>();
+        for (StoreItem item : inventory) {
+            double price = item.getPhone().getPrice();
+            if (price >= min && price <= max) {
+                results.add(item);
+            }
+        }
+        return results;
+    }
 }
