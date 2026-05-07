@@ -2,31 +2,28 @@ package org.lab4;
 
 import java.util.ArrayList;
 
-/**
- * Клас Store демонструє принцип агрегації (містить список телефонів).
- */
 public class Store {
-    private String storeName;
-    private ArrayList<Phone> inventory; // Агрегація
+    private ArrayList<StoreItem> inventory;
 
-    public Store(String storeName) {
-        this.storeName = storeName;
+    public Store() {
         this.inventory = new ArrayList<>();
     }
 
-    public void addPhone(Phone phone) {
-        // Додаємо копію об'єкта, демонструючи використання конструктора копіювання
-        this.inventory.add(new Phone(phone));
-    }
-
-    public void displayInventory() {
-        System.out.println("--- Магазин: " + storeName + " ---");
-        if (inventory.isEmpty()) {
-            System.out.println("Склад порожній.");
-        } else {
-            for (Phone p : inventory) {
-                System.out.println(p);
+    public void addNewPhone(Phone ph, int quantity) {
+        boolean found = false;
+        for (StoreItem item : inventory) {
+            // Використовуємо метод equals(), реалізований у попередніх лабах
+            if (item.getPhone().equals(ph)) {
+                item.setQuantity(item.getQuantity() + quantity);
+                found = true;
+                break;
             }
         }
+        if (!found) {
+            inventory.add(new StoreItem(ph, quantity));
+        }
     }
+
+    public ArrayList<StoreItem> getInventory() { return inventory; }
+    public void setInventory(ArrayList<StoreItem> list) { this.inventory = list; }
 }
