@@ -8,19 +8,23 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // Завантаження даних при старті
         devices = FileService.loadFromFile();
-        System.out.println("Завантажено об'єктів: " + devices.size());
 
         boolean exit = false;
         while (!exit) {
-            System.out.println("\n1. Створити | 2. Вивести | 3. Вийти");
+            System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
+            System.out.println("1. Пошук об'єкта");
+            System.out.println("2. Створити новий об'єкт");
+            System.out.println("3. Вивести всі об'єкти");
+            System.out.println("4. Завершити роботу");
+            System.out.print("Вибір: ");
+
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> createDeviceMenu();
-                case "2" -> showAllDevices();
-                case "3" -> {
-                    // 2Збереження даних перед виходом
+                case "1" -> searchMenu(); // Виклик підменю
+                case "2" -> createDeviceMenu();
+                case "3" -> showAllDevices();
+                case "4" -> {
                     FileService.saveToFile(devices);
                     exit = true;
                 }
