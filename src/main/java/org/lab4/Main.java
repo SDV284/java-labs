@@ -4,28 +4,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    private static ArrayList<Phone> devices = new ArrayList<>();
+    // ЗАМІНА: Замість ArrayList<Phone> тепер об'єкт нашого контейнера
+    private static Store myStore = new Store();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        devices = FileService.loadFromFile();
+        myStore.setInventory(FileService.loadFromFile());
+        System.out.println("Базу даних завантажено. Товарів у списку: " + myStore.getInventory().size());
 
         boolean exit = false;
         while (!exit) {
-            System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
-            System.out.println("1. Пошук об'єкта");
-            System.out.println("2. Створити новий об'єкт");
-            System.out.println("3. Вивести всі об'єкти");
-            System.out.println("4. Завершити роботу");
-            System.out.print("Вибір: ");
-
+            System.out.println("\n=== СКЛАД МАГАЗИНУ (ПР11) ===");
+            System.out.println("1. Пошук | 2. Додати товар | 3. Весь склад | 4. Вихід");
             String choice = scanner.nextLine();
+
             switch (choice) {
-                case "1" -> searchMenu(); // Виклик підменю
+                case "1" -> searchMenu();
                 case "2" -> createDeviceMenu();
-                case "3" -> showAllDevices();
+                case "3" -> showInventory();
                 case "4" -> {
-                    FileService.saveToFile(devices);
+                    FileService.saveToFile(myStore.getInventory());
                     exit = true;
                 }
             }
@@ -33,121 +31,61 @@ public class Main {
     }
 
     private static void createDeviceMenu() {
-        System.out.println("\n--- Оберіть тип пристрою ---");
-        System.out.println("1. Смартфон | 2. Кнопковий | 3. Захищений | 4. Складаний");
-        String type = scanner.nextLine();
-
+        System.out.println("\n--- Оберіть тип: 1.Смартфон 2.Кнопковий 3.Захищений 4.Складаний ---");
+        String typeChoice = scanner.nextLine();
         try {
             System.out.print("Бренд: "); String b = scanner.nextLine();
             System.out.print("Модель: "); String m = scanner.nextLine();
             System.out.print("Ціна: "); double p = Double.parseDouble(scanner.nextLine());
 
-            switch (type) {
-                case "1" -> {
-                    System.out.print("Екран: "); double s = Double.parseDouble(scanner.nextLine());
-                    System.out.print("ОС: "); String os = scanner.nextLine();
-                    devices.add(new SmartPhone(b, m, p, s, os));
-                }
-                case "2" -> {
-                    System.out.print("Ліхтарик (true/false): "); boolean f = Boolean.parseBoolean(scanner.nextLine());
-                    devices.add(new KeypadPhone(b, m, p, f));
-                }
-                case "3" -> {
-                    System.out.print("IP Рейтинг (число): "); int ip = Integer.parseInt(scanner.nextLine());
-                    devices.add(new RuggedPhone(b, m, p, ip));
-                }
-                case "4" -> {
-                    System.out.print("Екран: "); double s = Double.parseDouble(scanner.nextLine());
-                    System.out.print("ОС: "); String os = scanner.nextLine();
-                    System.out.print("Цикли згинання: "); int c = Integer.parseInt(scanner.nextLine());
-                    devices.add(new FoldableSmartPhone(b, m, p, s, os, c));
-                }
-                default -> System.out.println("Скасовано: невідомий тип.");
+            // НОВЕ: Запит кількості
+            System.out.print("Кількість одиниць на склад: ");
+            int q = Integer.parseInt(scanner.nextLine());
+
+            Phone phone = null;
+            switch (typeChoice) {
+                case "1" -> phone = new SmartPhone(b, m, p, 6.1, "Android");
+                case "2" -> phone = new KeypadPhone(b, m, p, true);
+                case "3" -> phone = new RuggedPhone(b, m, p, 68);
+                case "4" -> phone = new FoldableSmartPhone(b, m, p, 7.6, "Android", 200000);
             }
-            System.out.println("Об'єкт успішно додано!");
+
+            if (phone != null) {
+                myStore.addNewPhone(phone, q);
+                System.out.println("Дані оновлено!");
+            }
         } catch (Exception e) {
-            System.out.println("Помилка: невірний формат даних.");
+            System.out.println("Помилка вводу.");
         }
     }
 
-    private static void showAllDevices() {
-        if (devices.isEmpty()) {
-            System.out.println("\nКолекція порожня.");
+    private static void showInventory() {
+        ArrayList<StoreItem> items = myStore.getInventory();
+        if (items.isEmpty()) {
+            System.out.println("Склад порожній.");
         } else {
-            System.out.println("\n--- Список пристроїв ---");
-            for (Phone d : devices) System.out.println(d.toString());
+            for (StoreItem item : items) {
+                System.out.println(item.toString());
+            }
         }
     }
 
     private static void searchMenu() {
-        boolean back = false;
-        while (!back) {
-            System.out.println("\n--- КРИТЕРІЇ ПОШУКУ ---");
-            System.out.println("1. За брендом | 2. За моделлю | 3. За ціною | 4. Назад");
-            String choice = scanner.nextLine();
-
-            switch (choice) {
-                case "1" -> {
-                    System.out.print("Бренд: ");
-                    displayResults(findByBrand(scanner.nextLine()));
-                }
-                case "2" -> {
-                    System.out.print("Модель: ");
-                    displayResults(findByModel(scanner.nextLine()));
-                }
-                case "3" -> {
-                    try {
-                        System.out.print("Мін. ціна: ");
-                        double min = Double.parseDouble(scanner.nextLine());
-                        System.out.print("Макс. ціна: ");
-                        double max = Double.parseDouble(scanner.nextLine());
-                        displayResults(findByPriceRange(min, max));
-                    } catch (Exception e) {
-                        System.out.println("Помилка: введіть числа.");
-                    }
-                }
-                case "4" -> back = true;
-                default -> System.out.println("Невірний вибір.");
-            }
+        System.out.println("1. За брендом | 2. За ціною");
+        String choice = scanner.nextLine();
+        if (choice.equals("1")) {
+            System.out.print("Бренд: ");
+            String brand = scanner.nextLine();
+            ArrayList<StoreItem> results = myStore.findByBrand(brand);
+            for (StoreItem res : results) System.out.println(res);
         }
-    }
-
-    private static ArrayList<Phone> findByBrand(String brand) {
-        ArrayList<Phone> found = new ArrayList<>();
-        for (Phone p : devices) {
-            // Пошук без урахування регістру (Stream API заборонено)
-            if (p.getBrand().toLowerCase().contains(brand.toLowerCase())) {
-                found.add(p);
-            }
+        if (choice.equals("2")) {
+            System.out.print("Мінімальна ціна: ");
+            double min = Double.parseDouble(scanner.nextLine());
+            System.out.print("Максимальна ціна: ");
+            double max = Double.parseDouble(scanner.nextLine());
+            ArrayList<StoreItem> results = myStore.findByPriceRange(min, max);
+            for (StoreItem res : results) System.out.println(res);
         }
-        return found;
-    }
-
-    private static void displayResults(ArrayList<Phone> results) {
-        if (results.isEmpty()) {
-            System.out.println("Об'єктів не знайдено.");
-        } else {
-            for (Phone p : results) System.out.println(p);
-        }
-    }
-
-    private static ArrayList<Phone> findByModel(String model) {
-        ArrayList<Phone> found = new ArrayList<>();
-        for (Phone p : devices) {
-            if (p.getModel().toLowerCase().contains(model.toLowerCase())) {
-                found.add(p);
-            }
-        }
-        return found;
-    }
-
-    private static ArrayList<Phone> findByPriceRange(double min, double max) {
-        ArrayList<Phone> found = new ArrayList<>();
-        for (Phone p : devices) {
-            if (p.getPrice() >= min && p.getPrice() <= max) {
-                found.add(p);
-            }
-        }
-        return found;
     }
 }
