@@ -108,4 +108,24 @@ public class Main {
             for (Phone p : results) System.out.println(p);
         }
     }
+
+    private static ArrayList<Phone> findByModel(String model) {
+        ArrayList<Phone> found = new ArrayList<>();
+        for (Phone p : devices) {
+            if (p.getModel().toLowerCase().contains(model.toLowerCase())) {
+                found.add(p);
+            }
+        }
+        return found;
+    }
+
+    private static ArrayList<Phone> findByPriceRange(double min, double max) {
+        ArrayList<Phone> found = new ArrayList<>();
+        for (Phone p : devices) {
+            if (p.getPrice() >= min && p.getPrice() <= max) {
+                found.add(p);
+            }
+        }
+        return found;
+    }
 }
