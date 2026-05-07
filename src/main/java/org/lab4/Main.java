@@ -8,19 +8,23 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // Завантаження даних при старті
         devices = FileService.loadFromFile();
-        System.out.println("Завантажено об'єктів: " + devices.size());
 
         boolean exit = false;
         while (!exit) {
-            System.out.println("\n1. Створити | 2. Вивести | 3. Вийти");
+            System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
+            System.out.println("1. Пошук об'єкта");
+            System.out.println("2. Створити новий об'єкт");
+            System.out.println("3. Вивести всі об'єкти");
+            System.out.println("4. Завершити роботу");
+            System.out.print("Вибір: ");
+
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> createDeviceMenu();
-                case "2" -> showAllDevices();
-                case "3" -> {
-                    // 2Збереження даних перед виходом
+                case "1" -> searchMenu(); // Виклик підменю
+                case "2" -> createDeviceMenu();
+                case "3" -> showAllDevices();
+                case "4" -> {
                     FileService.saveToFile(devices);
                     exit = true;
                 }
@@ -76,17 +80,35 @@ public class Main {
     }
 
     private static void searchMenu() {
-        System.out.println("\n--- МЕНЮ ПОШУКУ ---");
-        System.out.println("1. Пошук за брендом");
-        System.out.println("2. Повернутися");
-        System.out.print("Вибір: ");
+        boolean back = false;
+        while (!back) {
+            System.out.println("\n--- КРИТЕРІЇ ПОШУКУ ---");
+            System.out.println("1. За брендом | 2. За моделлю | 3. За ціною | 4. Назад");
+            String choice = scanner.nextLine();
 
-        String choice = scanner.nextLine();
-        if (choice.equals("1")) {
-            System.out.print("Введіть бренд: ");
-            String brand = scanner.nextLine();
-            ArrayList<Phone> results = findByBrand(brand);
-            displayResults(results);
+            switch (choice) {
+                case "1" -> {
+                    System.out.print("Бренд: ");
+                    displayResults(findByBrand(scanner.nextLine()));
+                }
+                case "2" -> {
+                    System.out.print("Модель: ");
+                    displayResults(findByModel(scanner.nextLine()));
+                }
+                case "3" -> {
+                    try {
+                        System.out.print("Мін. ціна: ");
+                        double min = Double.parseDouble(scanner.nextLine());
+                        System.out.print("Макс. ціна: ");
+                        double max = Double.parseDouble(scanner.nextLine());
+                        displayResults(findByPriceRange(min, max));
+                    } catch (Exception e) {
+                        System.out.println("Помилка: введіть числа.");
+                    }
+                }
+                case "4" -> back = true;
+                default -> System.out.println("Невірний вибір.");
+            }
         }
     }
 
