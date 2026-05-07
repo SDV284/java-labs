@@ -8,20 +8,22 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        // Завантаження даних при старті
+        devices = FileService.loadFromFile();
+        System.out.println("Завантажено об'єктів: " + devices.size());
+
         boolean exit = false;
         while (!exit) {
-            System.out.println("\n=== ГОЛОВНЕ МЕНЮ ===");
-            System.out.println("1. Створити новий об'єкт");
-            System.out.println("2. Вивести всі об'єкти");
-            System.out.println("3. Завершити роботу");
-            System.out.print("Оберіть дію: ");
-
+            System.out.println("\n1. Створити | 2. Вивести | 3. Вийти");
             String choice = scanner.nextLine();
             switch (choice) {
-                case "1" -> createDeviceMenu(); // Оновлений метод з підменю
+                case "1" -> createDeviceMenu();
                 case "2" -> showAllDevices();
-                case "3" -> exit = true;
-                default -> System.out.println("Невірний вибір.");
+                case "3" -> {
+                    // 2Збереження даних перед виходом
+                    FileService.saveToFile(devices);
+                    exit = true;
+                }
             }
         }
     }
