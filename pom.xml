@@ -26,5 +26,10 @@
             <version>2.10.1</version>
             <scope>main</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.2</version>
+        </dependency>
     </dependencies>
 </project>
