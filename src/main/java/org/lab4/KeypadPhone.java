@@ -16,4 +16,6 @@ public class KeypadPhone extends Phone {
     public String toString() {
         return super.toString() + String.format(" | Кнопковий [Ліхтарик: %s]", hasFlashlight ? "Так" : "Ні");
     }
+
+    public boolean isHasFlashlight() { return hasFlashlight; }
 }

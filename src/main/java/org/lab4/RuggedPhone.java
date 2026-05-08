@@ -13,4 +13,6 @@ public class RuggedPhone extends Phone {
     public String toString() {
         return super.toString() + String.format(" | Захищений [IP Рейтинг: IP%d]", ipRating);
     }
+
+    public int getIpRating() { return ipRating; }
 }

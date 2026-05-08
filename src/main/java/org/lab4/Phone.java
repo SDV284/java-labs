@@ -50,4 +50,6 @@ public class Phone {
         return String.format("Phone[Brand: %s, Model: %s, Price: %.2f]",
                 brand, model, price);
     }
+
+    public String getType() { return type; }
 }

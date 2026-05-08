@@ -19,4 +19,7 @@ public class SmartPhone extends Phone {
         // Поліморфне розширення методу toString
         return super.toString() + String.format(" | Смартфон [Екран: %.1f\", ОС: %s]", screenSize, os);
     }
+
+    public double getScreenSize() { return screenSize; }
+    public String getOs() { return os; }
 }

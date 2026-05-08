@@ -13,4 +13,6 @@ public class FoldableSmartPhone extends SmartPhone {
     public String toString() {
         return super.toString() + String.format(" | Складаний [Ресурс згинання: %d циклів]", foldingCycles);
     }
+
+    public int getFoldingCycles() { return foldingCycles; }
 }
