@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    // ЗАМІНА: Замість ArrayList<Phone> тепер об'єкт нашого контейнера
+    private static DatabaseManager dbManager;
     private static Store myStore = new Store();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Вкажіть файл конфігурації (напр. db.properties)");
+            return;
+        }
+
+        dbManager = new DatabaseManager(args[0]);
         myStore.setInventory(FileService.loadFromFile());
         System.out.println("Базу даних завантажено. Товарів у списку: " + myStore.getInventory().size());
 
@@ -69,6 +75,7 @@ public class Main {
 
             if (phone != null) {
                 myStore.addNewPhone(phone, q);
+                dbManager.savePhone(phone, q);
                 System.out.println("Товар успішно додано/оновлено на складі.");
             }
         } catch (Exception e) {
