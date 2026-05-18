@@ -100,24 +100,17 @@ public class Main {
         ArrayList<StoreItem> result = null;
 
         switch (choice) {
-            case "1" -> {
-                // Лямбда-вираз для сортування за ціною
-                Comparator<StoreItem> priceComp = (o1, o2) ->
-                        Double.compare(o1.getPhone().getPrice(), o2.getPhone().getPrice());
-                result = myStore.getSortedInventory(priceComp);
-            }
-            case "2" -> {
-                // Лямбда-вираз для сортування за моделлю (А-Я)
-                Comparator<StoreItem> modelComp = (o1, o2) ->
-                        o1.getPhone().getModel().compareToIgnoreCase(o2.getPhone().getModel());
-                result = myStore.getSortedInventory(modelComp);
-            }
-            case "3" -> {
-                // Лямбда-вираз для сортування за кількістю (від більшого)
-                Comparator<StoreItem> qtyComp = (o1, o2) ->
-                        Integer.compare(o2.getQuantity(), o1.getQuantity());
-                result = myStore.getSortedInventory(qtyComp);
-            }
+            case "1" -> result = myStore.getSortedInventory((o1, o2) ->
+                    Double.compare(o1.getPhone().getPrice(), o2.getPhone().getPrice()));
+
+            case "2" -> result = myStore.getSortedInventory((o1, o2) ->
+                    o1.getPhone().getModel().compareToIgnoreCase(o2.getPhone().getModel()));
+
+            case "3" -> result = myStore.getSortedInventory((o1, o2) ->
+                    Integer.compare(o2.getQuantity(), o1.getQuantity()));
+
+            case "0" -> { return; }
+            default -> System.out.println("Невірний вибір.");
         }
         if (result != null) showInventory(result);
     }
