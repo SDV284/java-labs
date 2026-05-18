@@ -101,14 +101,10 @@ public class Main {
 
         switch (choice) {
             case "1" -> {
-                // Анонімний клас для сортування за ціною
-                Comparator<StoreItem> priceComparator = new Comparator<StoreItem>() {
-                    @Override
-                    public int compare(StoreItem o1, StoreItem o2) {
-                        return Double.compare(o1.getPhone().getPrice(), o2.getPhone().getPrice());
-                    }
-                };
-                result = myStore.getSortedInventory(priceComparator);
+                // Лямбда-вираз для сортування за ціною
+                Comparator<StoreItem> priceComp = (o1, o2) ->
+                        Double.compare(o1.getPhone().getPrice(), o2.getPhone().getPrice());
+                result = myStore.getSortedInventory(priceComp);
             }
             case "2" -> {
                 // Анонімний клас для сортування за моделлю
