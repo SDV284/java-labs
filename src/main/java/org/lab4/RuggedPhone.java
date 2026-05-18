@@ -9,6 +9,11 @@ public class RuggedPhone extends Phone {
         this.ipRating = ipRating;
     }
 
+    public void setIpRating(int ipRating) {
+        if (ipRating < 0) throw new IllegalArgumentException("Рейтинг IP не може бути від'ємним");
+        this.ipRating = ipRating;
+    }
+
     @Override
     public String toString() {
         return super.toString() + String.format(" | Захищений [IP Рейтинг: IP%d]", ipRating);

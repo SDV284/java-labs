@@ -9,6 +9,11 @@ public class FoldableSmartPhone extends SmartPhone {
         this.foldingCycles = foldingCycles;
     }
 
+    public void setFoldingCycles(int foldingCycles) {
+        if (foldingCycles < 0) throw new IllegalArgumentException("Кількість циклів не може бути від'ємною");
+        this.foldingCycles = foldingCycles;
+    }
+
     @Override
     public String toString() {
         return super.toString() + String.format(" | Складаний [Ресурс згинання: %d циклів]", foldingCycles);

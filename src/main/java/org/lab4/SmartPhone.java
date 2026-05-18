@@ -14,6 +14,16 @@ public class SmartPhone extends Phone {
         this.os = os;
     }
 
+    public void setScreenSize(double screenSize) {
+        if (screenSize <= 0) throw new IllegalArgumentException("Розмір екрану має бути додатним");
+        this.screenSize = screenSize;
+    }
+
+    public void setOs(String os) {
+        if (os == null || os.trim().isEmpty()) throw new IllegalArgumentException("ОС не може бути порожньою");
+        this.os = os;
+    }
+
     @Override
     public String toString() {
         // Поліморфне розширення методу toString
