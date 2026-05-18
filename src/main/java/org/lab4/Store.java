@@ -1,6 +1,7 @@
 package org.lab4;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Store {
     private ArrayList<StoreItem> inventory;
@@ -26,6 +27,12 @@ public class Store {
 
     public ArrayList<StoreItem> getInventory() { return inventory; }
     public void setInventory(ArrayList<StoreItem> list) { this.inventory = list; }
+
+    public ArrayList<StoreItem> getSortedInventory() {
+        ArrayList<StoreItem> sortedList = new ArrayList<>(this.inventory);
+        Collections.sort(sortedList);
+        return sortedList;
+    }
 
     public ArrayList<StoreItem> findByBrand(String brand) {
         ArrayList<StoreItem> results = new ArrayList<>();
