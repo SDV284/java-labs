@@ -2,6 +2,7 @@ package org.lab4;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Store {
     private ArrayList<StoreItem> inventory;
@@ -28,9 +29,9 @@ public class Store {
     public ArrayList<StoreItem> getInventory() { return inventory; }
     public void setInventory(ArrayList<StoreItem> list) { this.inventory = list; }
 
-    public ArrayList<StoreItem> getSortedInventory() {
+    public ArrayList<StoreItem> getSortedInventory(Comparator<StoreItem> comparator) {
         ArrayList<StoreItem> sortedList = new ArrayList<>(this.inventory);
-        Collections.sort(sortedList);
+        Collections.sort(sortedList, comparator);
         return sortedList;
     }
 
