@@ -107,24 +107,16 @@ public class Main {
                 result = myStore.getSortedInventory(priceComp);
             }
             case "2" -> {
-                // Анонімний клас для сортування за моделлю
-                Comparator<StoreItem> modelComparator = new Comparator<StoreItem>() {
-                    @Override
-                    public int compare(StoreItem o1, StoreItem o2) {
-                        return o1.getPhone().getModel().compareToIgnoreCase(o2.getPhone().getModel());
-                    }
-                };
-                result = myStore.getSortedInventory(modelComparator);
+                // Лямбда-вираз для сортування за моделлю (А-Я)
+                Comparator<StoreItem> modelComp = (o1, o2) ->
+                        o1.getPhone().getModel().compareToIgnoreCase(o2.getPhone().getModel());
+                result = myStore.getSortedInventory(modelComp);
             }
             case "3" -> {
-                // Анонімний клас для сортування за кількістю (спадний порядок)
-                Comparator<StoreItem> qtyComparator = new Comparator<StoreItem>() {
-                    @Override
-                    public int compare(StoreItem o1, StoreItem o2) {
-                        return Integer.compare(o2.getQuantity(), o1.getQuantity());
-                    }
-                };
-                result = myStore.getSortedInventory(qtyComparator);
+                // Лямбда-вираз для сортування за кількістю (від більшого)
+                Comparator<StoreItem> qtyComp = (o1, o2) ->
+                        Integer.compare(o2.getQuantity(), o1.getQuantity());
+                result = myStore.getSortedInventory(qtyComp);
             }
         }
         if (result != null) showInventory(result);
