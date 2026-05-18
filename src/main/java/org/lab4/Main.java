@@ -120,6 +120,16 @@ public class Main {
                 };
                 result = myStore.getSortedInventory(modelComparator);
             }
+            case "3" -> {
+                // Анонімний клас для сортування за кількістю (спадний порядок)
+                Comparator<StoreItem> qtyComparator = new Comparator<StoreItem>() {
+                    @Override
+                    public int compare(StoreItem o1, StoreItem o2) {
+                        return Integer.compare(o2.getQuantity(), o1.getQuantity());
+                    }
+                };
+                result = myStore.getSortedInventory(qtyComparator);
+            }
         }
         if (result != null) showInventory(result);
     }
