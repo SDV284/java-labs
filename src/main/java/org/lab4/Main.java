@@ -22,7 +22,7 @@ public class Main {
                 case "1" -> searchMenu();
                 case "2" -> createDeviceMenu();
                 case "3" -> showInventory(myStore.getInventory());
-                case "4" -> showInventory(myStore.getSortedInventory()); // Новий пункт
+                case "4" -> sortingSubMenu();
                 case "5" -> {
                     FileService.saveToFile(myStore.getInventory());
                     exit = true;
