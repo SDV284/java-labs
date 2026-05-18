@@ -2,6 +2,7 @@ package org.lab4;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Comparator;
 
 public class Main {
     private static Store myStore = new Store();
@@ -13,7 +14,7 @@ public class Main {
 
         boolean exit = false;
         while (!exit) {
-            System.out.println("\n=== МЕНЮ (ПР13) ===");
+            System.out.println("\n=== МЕНЮ ===");
             System.out.println("1. Пошук | 2. Додати | 3. Весь склад | 4. Відсортований список | 5. Вихід");
             String choice = scanner.nextLine();
 
@@ -86,6 +87,41 @@ public class Main {
                 System.out.println(item);
             }
         }
+    }
+
+    private static void sortingSubMenu() {
+        System.out.println("\nОберіть критерій сортування:");
+        System.out.println("1. За ціною (від дешевих)");
+        System.out.println("2. За назвою моделі (А-Я)");
+        System.out.println("3. За кількістю на складі (від більшого)");
+        System.out.println("0. Повернутися");
+
+        String choice = scanner.nextLine();
+        ArrayList<StoreItem> result = null;
+
+        switch (choice) {
+            case "1" -> {
+                // Анонімний клас для сортування за ціною
+                Comparator<StoreItem> priceComparator = new Comparator<StoreItem>() {
+                    @Override
+                    public int compare(StoreItem o1, StoreItem o2) {
+                        return Double.compare(o1.getPhone().getPrice(), o2.getPhone().getPrice());
+                    }
+                };
+                result = myStore.getSortedInventory(priceComparator);
+            }
+            case "2" -> {
+                // Анонімний клас для сортування за моделлю
+                Comparator<StoreItem> modelComparator = new Comparator<StoreItem>() {
+                    @Override
+                    public int compare(StoreItem o1, StoreItem o2) {
+                        return o1.getPhone().getModel().compareToIgnoreCase(o2.getPhone().getModel());
+                    }
+                };
+                result = myStore.getSortedInventory(modelComparator);
+            }
+        }
+        if (result != null) showInventory(result);
     }
 
     private static void searchMenu() {
