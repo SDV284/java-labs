@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    // ЗАМІНА: Замість ArrayList<Phone> тепер об'єкт нашого контейнера
     private static Store myStore = new Store();
     private static Scanner scanner = new Scanner(System.in);
 
@@ -14,18 +13,20 @@ public class Main {
 
         boolean exit = false;
         while (!exit) {
-            System.out.println("\n=== СКЛАД МАГАЗИНУ (ПР11) ===");
-            System.out.println("1. Пошук | 2. Додати товар | 3. Весь склад | 4. Вихід");
+            System.out.println("\n=== МЕНЮ (ПР13) ===");
+            System.out.println("1. Пошук | 2. Додати | 3. Весь склад | 4. Відсортований список | 5. Вихід");
             String choice = scanner.nextLine();
 
             switch (choice) {
                 case "1" -> searchMenu();
                 case "2" -> createDeviceMenu();
-                case "3" -> showInventory();
-                case "4" -> {
+                case "3" -> showInventory(myStore.getInventory());
+                case "4" -> showInventory(myStore.getSortedInventory()); // Новий пункт
+                case "5" -> {
                     FileService.saveToFile(myStore.getInventory());
                     exit = true;
                 }
+                default -> System.out.println("Невірний вибір.");
             }
         }
     }
@@ -76,13 +77,13 @@ public class Main {
         }
     }
 
-    private static void showInventory() {
-        ArrayList<StoreItem> items = myStore.getInventory();
+    private static void showInventory(ArrayList<StoreItem> items) {
         if (items.isEmpty()) {
-            System.out.println("Склад порожній.");
+            System.out.println("Список об'єктів порожній.");
         } else {
+            System.out.println("\n--- Вміст списку ---");
             for (StoreItem item : items) {
-                System.out.println(item.toString());
+                System.out.println(item);
             }
         }
     }
